@@ -1,0 +1,32 @@
+= Asset Gallery
+
+This extension allows you to create galleries of Paperclipped Assets. Provides an admin interface to add and remove assets from a Gallery, and radius tags to easily include the Galleries in your site.
+
+I modified the views from zapnap/radiant-flash-gallery-extension to use in my extension. However THIS IS NOT A FORK. It is a newly created extension.
+
+= Tag Examples
+
+<r:gallery:each >
+  <div>
+    <div><r:gallery:first_image size="thumbnail" />
+    <div><r:gallery:name /></div>
+  </div>
+</r:gallery:each>
+
+    <r:gallery:items name="wowser gallery">
+      <div class="gallery_container">
+        <h2><a href="#<r:gallery_item:id />_box" id="<r:gallery_item:name />_header"><r:gallery_item:name /></a></h2>
+        <div style="border: 1px solid #cccccc; padding: 3px; width: 200px;">
+          <a href="#<r:gallery_item:id />_box" id="<r:gallery_item:name />_small"><r:gallery_item:image size="icon" /></a>
+        </div>
+      </div>
+      <div id="<r:gallery_item:id />_box">
+        <r:gallery_item:image />
+      </div>
+      <script type="text/javascript">
+        Event.observe(window, 'load', function() {
+	  new FancyZoom("<r:gallery_item:name />_thumbnail");
+	  new FancyZoom("<r:gallery_item:name />_header");
+        });
+      </script>
+    </r:gallery:items>

@@ -1,0 +1,71 @@
+- content_for 'page_css' do
+  :sass
+    p.title
+      margin: 10px 0 !important
+
+    #content .form-area div.error-with-field
+      input.textbox
+        font-family: Georgia,Palatino,"Times New Roman",Times,serif
+        font-size: 200%
+        width: 100%
+
+    textarea.textarea
+      height: 150px !important
+      width: 100%
+      display: block
+
+    input.file
+      margin: 50px 0
+
+    img.asset
+      margin: 5px 0
+      border: 2px solid #fff
+
+    a.asset
+      display: block
+      margin: 5px 0
+
+    div.asset-list-container
+      overflow: auto
+      width: 100%
+      height: 300px
+      border: 2px solid #cccccc
+
+    div.asset-list-item-container
+      display: inline-block
+
+    div.asset-list-item
+      border: 1px solid #cccccc
+      text-align: center
+      padding: 5px
+      margin: 5px
+
+%h1= @gallery.new_record? ? 'New Gallery' : 'Edit Gallery'
+
+- form_for [:admin, @gallery], :html => {:multipart => true} do |f|
+  .form-area
+    %p.title
+      %label Title
+      = f.text_field :name, :class => 'textbox'
+    %p.title
+      %label Description
+      = f.text_area :caption, :class => 'textarea'
+    %p.title
+      %label Select Assets For Gallery
+    .asset-list-container
+      - Asset.all.each do |asset|
+        .asset-list-item-container
+          .asset-list-item
+            = image_tag(asset.thumbnail(:thumbnail))
+            %h5= asset.title
+            - if @gallery.gallery_items.exists?(:asset_id => asset.id)
+              = check_box "checked", asset.id, {:checked => true}
+            - else
+              = check_box "checked", asset.id
+
+     
+  %p.buttons
+    - button_text = @gallery.new_record? ? 'Create' : 'Save Changes'
+    = submit_tag button_text, :class => 'button'
+    or
+    = link_to 'Cancel', admin_galleries_url
